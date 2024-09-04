@@ -2,7 +2,7 @@
 
 import { connectToDatabase } from "@/lib/database";
 import Notification, { INotification } from "../database/models/notification.model";
-import { handleError } from "@/lib/utils";
+import {convertToUTC, handleError} from "@/lib/utils";
 import { STORED_EMAIL_LIMIT } from "@/lib/constants";
 
 export const createNotification = async ( params: INotification) => {
@@ -15,7 +15,11 @@ export const createNotification = async ( params: INotification) => {
             return false;
         }
 
-        const newNotification = await Notification.create({ ...params });
+        const { time } = params;
+
+        const utcTime = convertToUTC(time);
+
+        const newNotification = await Notification.create({ ...params, time: utcTime });
 
         return JSON.parse(JSON.stringify(newNotification));
     } catch (error) {

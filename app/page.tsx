@@ -4,7 +4,6 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { INotification } from "@/lib/database/models/notification.model";
 import { createNotification } from "@/lib/actions/notification.actions";
 import { DAY_OF_WEEK, FREQUENCY } from "@/lib/constants";
-import {DateTime} from "luxon";
 
 export default function Home() {
 
