@@ -4,9 +4,9 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { INotification } from "@/lib/database/models/notification.model";
 import { createNotification } from "@/lib/actions/notification.actions";
 import { DAY_OF_WEEK, FREQUENCY } from "@/lib/constants";
+import { convertToUTC } from "@/lib/utils";
 
 export default function Home() {
-
   const initFormData = {
     userName: '',
     notificationInterval: '',
@@ -18,7 +18,6 @@ export default function Home() {
   }
   const [formData, setFormData] = useState<INotification>(initFormData);
   const [isLoading, setIsLoading] = useState(false);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({
       ...prev,
@@ -33,7 +32,7 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const newNotification = await createNotification({...formData})
+      const newNotification = await createNotification({...formData, time: convertToUTC(formData.time)})
 
       if (!newNotification) {
         setFormData(initFormData)

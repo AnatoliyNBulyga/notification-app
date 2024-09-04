@@ -15,11 +15,7 @@ export const createNotification = async ( params: INotification) => {
             return false;
         }
 
-        const { time } = params;
-
-        const utcTime = convertToUTC(time);
-
-        const newNotification = await Notification.create({ ...params, time: utcTime });
+        const newNotification = await Notification.create({ ...params });
 
         return JSON.parse(JSON.stringify(newNotification));
     } catch (error) {
